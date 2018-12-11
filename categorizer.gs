@@ -15,6 +15,8 @@ function SET_CATEGORIES() {
   var cat2Column = tabName+'!I3:I'+numRowsA1;
   var esHuchaColumn = tabName+'!J3:J'+numRowsA1;
   var esCategorizadaColumn = tabName+'!K3:K'+numRowsA1;
+  var precioColumn = getPriceColumn(tabName, numRowsA1);
+  var iftttDataColumn = getIFTTTDataColumn(tabName, numRowsA1);
 
   var rangeCat1 = ss.getRange(cat1Column).getValues();
   var rangeCat2 = ss.getRange(cat2Column).getValues();
@@ -22,15 +24,34 @@ function SET_CATEGORIES() {
   var rangeCategoria = ss.getRange(categoriaColumn).getValues();
   var rangeDescripcion = ss.getRange(descripcionColumn).getValues();
   var rangeCategorizada = ss.getRange(esCategorizadaColumn).getValues();
+  var rangePrecio = ss.getRange(precioColumn).getValues();
+  var rangeIftttData = ss.getRange(iftttDataColumn).getValues();
   
-  var categoriaCell, descripcionCell;
+  var segments, categoriaCell, descripcionCell, iftttDataCell;
 
   var i = 0;
   while (i < numRows) { 
     if (rangeCategorizada[0,i] != "true") {
       categoriaCell = (rangeCategoria[0,i] === undefined) ? "" : rangeCategoria[0,i].join();
       descripcionCell = (rangeDescripcion[0,i] === undefined) ? "" : rangeDescripcion[0,i].join();
+      iftttDataCell = (rangeIftttData[0,i] === undefined) ? "" : rangeIftttData[0,i].join();
       
+      
+      if (iftttDataCell != "") {
+        segments = iftttDataCell.split("\n");
+        if (segments.length == 2) {
+          rangePrecio[0,i] = [segments[0]];
+          rangeCategoria[0,i] = [segments[1]];
+          categoriaCell = segments[1];
+        } else if (segments.length == 3) {
+          rangePrecio[0,i] = [segments[0]];
+          rangeCategoria[0,i] = [segments[1]];
+          categoriaCell = segments[1];
+          rangeDescripcion[0,i] = [segments[2]];
+          descripcionCell = segments[2];
+        }
+      }
+        
       if (categoriaCell != "") {
         // Cálculo CAT1
         rangeCat1[0,i] = [SET_CAT_1(categoriaCell)];
@@ -64,6 +85,9 @@ function SET_CATEGORIES() {
   ss.getRange(cat2Column).setValues(rangeCat2);
   ss.getRange(esHuchaColumn).setValues(rangeEsHucha);
   ss.getRange(esCategorizadaColumn).setValues(rangeCategorizada);
+  ss.getRange(precioColumn).setValues(rangePrecio);
+  ss.getRange(categoriaColumn).setValues(rangeCategoria);
+  ss.getRange(descripcionColumn).setValues(rangeDescripcion);
 }
 
 

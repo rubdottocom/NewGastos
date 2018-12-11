@@ -16,3 +16,6 @@ function getDate2Column(tabName, numRowsA1) {
 function getTimestampColumn(tabName, numRowsA1) {
   return tabName+'!C3:C'+numRowsA1;
 }
+function getIFTTTDataColumn(tabName, numRowsA1) {
+  return tabName+'!D3:D'+numRowsA1;
+}
