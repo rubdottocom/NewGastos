@@ -13,3 +13,6 @@ function getDateColumn(tabName, numRowsA1) {
 function getDate2Column(tabName, numRowsA1) {
   return tabName+'!B3:B'+numRowsA1;
 }
+function getTimestampColumn(tabName, numRowsA1) {
+  return tabName+'!C3:C'+numRowsA1;
+}

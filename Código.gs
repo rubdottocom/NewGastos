@@ -24,10 +24,12 @@ function runDaily() {
   var priceColumn = getPriceColumn(tabName, numRowsA1);
   var dateColumn = getDateColumn(tabName, numRowsA1);
   var date2Column = getDate2Column(tabName, numRowsA1);
+  var timestampColumn = getTimestampColumn(tabName, numRowsA1);
   
   var rangePrice = ss.getRange(priceColumn).getValues();
   var rangeDate = ss.getRange(dateColumn).getValues();
   var rangeDate2 = ss.getRange(date2Column).getValues();
+  var rangeTimestamp = ss.getRange(timestampColumn).getValues();  
 
   var i = 0;  
   var date = new Date();
@@ -35,13 +37,24 @@ function runDaily() {
   var months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
   var year = " 2018";
   var monthFriendly = months[mt] + year;
+  var idxStartHour;
+  var timestampDate;
+  var timestamp;
   
-  while (i < numRows) {
+  while (i < numRows) {    
     // Si tenemos precio pero no tenemos fecha 
     if ((rangePrice[0,i] != "") && (rangeDate[0,i] == "")) {
-       rangeDate[0,i] = [date]; // informamos la fecha
-      // TODO: Si ponemos tocamos esta columna me formatea todos los valores a fecha
-       //rangeDate2[0,i] = [monthFriendly]; // informamos la fecha friendly
+      idxStartHour = rangeTimestamp[0,i][0].indexOf(" at ");
+      // Si tenemos timestamp de IFTTT lo ponemos
+      if (idxStartHour > -1) {
+        timestampDate = rangeTimestamp[0,i][0].substring(0, idxStartHour-1);
+        timestamp = moment(test, "MMM DD, YYYY").toDate();
+        rangeDate[0,i] = [timestamp];
+      } else {
+        rangeDate[0,i] = [date]; // informamos la fecha
+        // TODO: Si ponemos tocamos esta columna me formatea todos los valores a fecha
+        //rangeDate2[0,i] = [monthFriendly]; // informamos la fecha friendly      
+      }
     }
     
     // Si no tenemos precio
