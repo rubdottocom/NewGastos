@@ -131,7 +131,6 @@ function SET_CAT_2(categoria, cat1, desc) {
     case "Caprabo":  
     case "Bon Area":
     case "Cuidado":
-    case "Limpieza facial":
     case "Alquiler":
     case "Bautizo":
     case "Suscripción anual":
@@ -140,6 +139,7 @@ function SET_CAT_2(categoria, cat1, desc) {
     case "Halloween":
     case "Higiene":
       return categoria;
+    case "Limpieza facial":
     case "limpieza facial":
     case "Cuidado facial":
     case "cuidado facial":
@@ -168,6 +168,11 @@ function SET_CAT_2(categoria, cat1, desc) {
     case "Gasto mensual Thais":
     case "Gasto mensual Rubén":
       return categoria;
+    case "Spotify":
+    case "Apple Music":
+    case "iCloud":
+      return "Suscripciones";
+      
   }
   
   switch (cat1) {
@@ -218,28 +223,20 @@ function SET_CAT_2(categoria, cat1, desc) {
       if (categoria.indexOf("T50") > -1) return "Metro";
       return categoria;
     case "Facturas mensuales":
+      switch(categoria) {
+        case "Endesa":
+        case "Gas":
+        case "Movil Thais":
+        case "Movil Rub":
+        case "Telefónica":
+        case "O2":
+          return "Utilities";
+        default:
+          return cat1;
+      }
     case "Gasto fortuito":
     case "Ropa":
-      switch (categoria) {
-        case "Spotify":
-        case "Apple Music":
-        case "iCloud":
-          return "Suscripciones";
-      }
-      if (cat1 == "Facturas mensuales") {
-        switch(categoria) {
-          case "Endesa":
-          case "Gas":
-          case "Movil Thais":
-          case "Movil Rub":
-          case "Telefónica":
-          case "O2":
-            return "Utilities";
-        }
-      }
-      return cat1;
-      
-      
+      return cat1; 
     case "Hogar":
       if (categoria == "Hogar") return "Gasto fortuito";
     case "Limpieza":
