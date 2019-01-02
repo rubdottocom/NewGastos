@@ -47,8 +47,8 @@ function runDaily() {
       idxStartHour = rangeTimestamp[0,i][0].indexOf(" at ");
       // Si tenemos timestamp de IFTTT lo ponemos
       if (idxStartHour > -1) {
-        timestampDate = rangeTimestamp[0,i][0].substring(0, idxStartHour-1);
-        timestamp = moment(test, "MMM DD, YYYY").toDate();
+        timestampDate = rangeTimestamp[0,i][0].substring(0, idxStartHour);
+        timestamp = moment(timestampDate, "MMM DD, YYYY").toDate();
         rangeDate[0,i] = [timestamp];
       } else {
         rangeDate[0,i] = [date]; // informamos la fecha
