@@ -384,16 +384,21 @@ function IS_SUPERMERCADO(v) {
 }
 
 function ES_HUCHA(cat1, cat2, desc) {
+  if (descIsHucha(desc)) return "true";
   switch (cat1) {
     case "Vacaciones":
       return "true";
     case "Renta":
-      if (desc.indexOf("Hucha") > -1 || desc.indexOf("hucha") > -1) {
-        return "true";
-      } else {
-        return "false";
-      }
+      if (descIsHucha(desc)) return "true";
+      return "false";
     default:
       return "true";
   }
+}
+
+function descIsHucha(desc) {
+  if (desc.indexOf("Hucha") > -1 || desc.indexOf("hucha") > -1) {
+    return true;
+  }
+  return false;
 }
