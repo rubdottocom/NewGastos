@@ -54,7 +54,7 @@ function SET_CATEGORIES() {
         
       if (categoriaCell != "") {
         // Cálculo CAT1
-        rangeCat1[0,i] = [SET_CAT_1(categoriaCell)];
+        rangeCat1[0,i] = [SET_CAT_1(categoriaCell, descripcionCell)];
         
         var cat1 = rangeCat1[0,i].join();
         // Cálculo CAT2
@@ -91,7 +91,8 @@ function SET_CATEGORIES() {
 }
 
 
-function SET_CAT_1(categoria) {
+function SET_CAT_1(categoria, desc) {
+  if (descIsHucha(desc)) return "Hucha";
   if (IS_SUPERMERCADO(categoria)) return "Supermercado";
   if (IS_COMER_FUERA(categoria)) return "Comer fuera";
   if (IS_FACTURAS_MENSUALES(categoria)) return "Facturas mensuales";
@@ -147,6 +148,7 @@ function SET_CAT_1(categoria) {
 }
 
 function SET_CAT_2(categoria, cat1, desc) {
+  if (descIsHucha(desc)) return "Hucha";
   switch (categoria) {
     case "Carne":
     case "Bon area":
