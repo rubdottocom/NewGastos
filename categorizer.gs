@@ -92,7 +92,7 @@ function SET_CATEGORIES() {
 
 
 function SET_CAT_1(categoria, desc) {
-  if (descIsHucha(desc)) return "Hucha";
+  // if (descIsHucha(desc)) return "Hucha";
   if (IS_SUPERMERCADO(categoria)) return "Supermercado";
   if (IS_COMER_FUERA(categoria)) return "Comer fuera";
   if (IS_FACTURAS_MENSUALES(categoria)) return "Facturas mensuales";
@@ -100,6 +100,16 @@ function SET_CAT_1(categoria, desc) {
   if (IS_RETURN_CATEGORIA_AS_CAT_1(categoria)) return categoria;
 
   switch (categoria) {
+    case "Navidad":
+      return "Vacaciones";
+    case "Comer ocio":
+    case "Comer fuera ocio":
+      return "Comer fuera";
+    case "Capricho":
+    case "Caprichos":
+      return "Paga la casa";
+    case "Podólogo":
+      return "Médico";
     case "Bautizo":
       return "Pau";
     case "Halloween":
@@ -111,7 +121,12 @@ function SET_CAT_1(categoria, desc) {
     case "Dentista":
       return "Salud";
     case "Gasto mensual Thais":
+    case "Gasto mensual T":
       return "Gasto mensual T";
+    case "Gasto mensual Ruben":
+    case "Gasto mensual Rub":
+    case "Gasto mensual R":
+      return "Gasto mensual R";  
     case "Videojuego":
     case "Videojuegos":
       return "Gasto mensual R";
@@ -122,6 +137,7 @@ function SET_CAT_1(categoria, desc) {
     case "Vacaciones - Hotel":
     case "Vacaciones - Comida":
     case "Vacaciones - Transporte":
+    case "Vacaciones - Ocio":
     case "Vacaciones":
       return "Vacaciones";
     case "Regalo":
@@ -148,8 +164,17 @@ function SET_CAT_1(categoria, desc) {
 }
 
 function SET_CAT_2(categoria, cat1, desc) {
-  if (descIsHucha(desc)) return "Hucha";
+  //if (descIsHucha(desc)) return "Hucha";
   switch (categoria) {
+    case "Donaciones":
+      return "Donaciones";
+    case "Navidad":
+      return "Navidad";
+    case "Comer ocio":
+    case "Comer fuera ocio":
+      return "Ocio";
+    case "Lotería":
+      return desc; // en Desc debería ir el nombre de la lotería en cuestión
     case "Carne":
     case "Bon area":
       return "Bon Area";
@@ -162,6 +187,7 @@ function SET_CAT_2(categoria, cat1, desc) {
     case "Suscripción anual":
     case "Seguro":
     case "Fruta y verdura":
+    case "Fruta y Verdura":
     case "Halloween":
     case "Higiene":
       return categoria;
@@ -183,25 +209,25 @@ function SET_CAT_2(categoria, cat1, desc) {
       return "Hotel";
     case "Vacaciones - Comida":
       return "Comida";
+    case "Vacaciones - Transporte":
+      return "Transporte";
+    case "Vacaciones - Ocio":
+      return "Ocio";
     case "Gasto mensual":
-      if (categoria.indexOf("Thais") > -1 || desc.indexOf("Thais") > -1) {
-        return categoria + " Thais";
-      } else if (categoria.indexOf("Rubén") > -1 || desc.indexOf("Rubén") > -1 || desc.indexOf("Rub") > -1) {
-        return categoria + " Rubén";
-      } else {
         return categoria + " Desconocido";
-      }
-    case "Gasto mensual Thais":
-    case "Gasto mensual Rubén":
-      return categoria;
     case "Spotify":
     case "Apple Music":
     case "iCloud":
       return "Suscripciones";
-      
   }
   
   switch (cat1) {
+    case "Médico":
+      return desc;
+    case "Gasto mensual R":
+      return "Gasto mensual R";
+    case "Gasto mensual T":
+      return "Gasto mensual T";
     case "Comer fuera":
       if (categoria.indexOf("Thais") > -1 || 
           desc.indexOf("Thais") > -1 ||
@@ -262,6 +288,7 @@ function SET_CAT_2(categoria, cat1, desc) {
       }
     case "Gasto fortuito":
     case "Ropa":
+    case "Paga la casa":
       return cat1; 
     case "Hogar":
       if (categoria == "Hogar") return "Gasto fortuito";
@@ -276,6 +303,8 @@ function SET_CAT_2(categoria, cat1, desc) {
         return "Regalos";
       } else if (desc.indexOf("MaLuz") > -1) {
         return "Canguro";
+      } else if (desc.indexOf("Ocio") > -1) { 
+        return "Ocio";
       } else {
         return cat1;
       }
@@ -305,6 +334,9 @@ function IS_RETURN_CATEGORIA_AS_CAT_1(v) {
     case "Ropa":
     case "Renta":
     case "Higiene":
+    case "Donaciones":
+    case "Lotería":
+    case "Formación":
       return true;
   }
   return false;
@@ -365,9 +397,11 @@ function IS_SUPERMERCADO(v) {
   switch (v) {
     case "Bon area":
     case "Bon Area":
+    case "Carrefour":
     case "Caprabo":
     case "Carne":
     case "Fruta y verdura":
+    case "Fruta y Verdura":
     case "Mercadona":
     case "Supermercado":
     case "Alimentación":
@@ -380,6 +414,7 @@ function IS_SUPERMERCADO(v) {
     case "Frutas":
     case "Verdura":
     case "Verduras":
+    case "Makro":
       return true;
   }
   return false;
@@ -394,7 +429,7 @@ function ES_HUCHA(cat1, cat2, desc) {
       if (descIsHucha(desc)) return "true";
       return "false";
     default:
-      return "true";
+      return "false";
   }
 }
 
