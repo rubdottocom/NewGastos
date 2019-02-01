@@ -6,7 +6,7 @@ var PriceCOLUMNTOCHECK = 5; //La columna del precio
 // Where you want the date time stamp offset from the input location. [row, column]
 var DATETIMELOCATION = [0,-4];
 // Sheet you are working on
-var SHEETNAME = 'Gastos 2018'
+var SHEETNAME = getTabToCategorize();
 
 var CAT1_COLUMN = 'B';
 var CAT2_COLUMN = 'C';
@@ -14,7 +14,7 @@ var CATEGORIA_COLUMN = 'D';
 var DESCRIPCION_COLUMN = 'E';
 
 function runDaily() {
-  var tabName = "Gastos 2018";
+  var tabName = getTabToCategorize();
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   ss.setActiveSheet(ss.getSheetByName(tabName));
   

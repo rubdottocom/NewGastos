@@ -1,8 +1,7 @@
 function SET_CATEGORIES() {
 
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var tabName = ss.getActiveSheet().getName();  
-  tabName = "Gastos 2018"; // TODO: recibir el nombre del mes y año por parámetro
+  var tabName = getTabToCategorize();
   
   ss.setActiveSheet(ss.getSheetByName(tabName));
 
@@ -27,6 +26,18 @@ function SET_CATEGORIES() {
   var rangePrecio = ss.getRange(precioColumn).getValues();
   var rangeIftttData = ss.getRange(iftttDataColumn).getValues();
   
+  // TODO: Get config!A1 cell value, we should get "config" sheet/tab
+  ss.setActiveSheet(ss.getSheetByName("config"));
+
+  var configNumRows = ss.getLastRow();
+  var config_categoriaColumn = getCategoriaConfigColumn("config", configNumRows);
+  var config_CAT1Column = getCAT1ConfigColumn("config", configNumRows);
+  var config_rangeCategoria = ss.getRange(config_categoriaColumn).getValues();
+  var config_rangeCAT1 = ss.getRange(config_CAT1Column).getValues();
+
+  ss.setActiveSheet(ss.getSheetByName(tabName));
+
+  
   var segments, categoriaCell, descripcionCell, iftttDataCell;
 
   var i = 0;
@@ -35,7 +46,6 @@ function SET_CATEGORIES() {
       categoriaCell = (rangeCategoria[0,i] === undefined) ? "" : rangeCategoria[0,i].join();
       descripcionCell = (rangeDescripcion[0,i] === undefined) ? "" : rangeDescripcion[0,i].join();
       iftttDataCell = (rangeIftttData[0,i] === undefined) ? "" : rangeIftttData[0,i].join();
-      
       
       if (iftttDataCell != "") {
         segments = iftttDataCell.split("\n");
@@ -54,7 +64,8 @@ function SET_CATEGORIES() {
         
       if (categoriaCell != "") {
         // Cálculo CAT1
-        rangeCat1[0,i] = [SET_CAT_1(categoriaCell, descripcionCell)];
+        rangeCat1[0,i] = 
+          [SET_CAT_1(categoriaCell, descripcionCell, config_rangeCategoria, config_rangeCAT1, configNumRows)];
         
         var cat1 = rangeCat1[0,i].join();
         // Cálculo CAT2
@@ -91,14 +102,21 @@ function SET_CATEGORIES() {
 }
 
 
-function SET_CAT_1(categoria, desc) {
-  // if (descIsHucha(desc)) return "Hucha";
-  if (IS_SUPERMERCADO(categoria)) return "Supermercado";
+function SET_CAT_1(categoria, desc, config_rangeCategoria, config_rangeCAT1, configNumRows) {
+  //if (IS_SUPERMERCADO(categoria)) return "Supermercado";
   if (IS_COMER_FUERA(categoria)) return "Comer fuera";
   if (IS_FACTURAS_MENSUALES(categoria)) return "Facturas mensuales";
   if (IS_TRANSPORTE(categoria)) return "Transporte";
   if (IS_RETURN_CATEGORIA_AS_CAT_1(categoria)) return categoria;
 
+  var i = 0;
+  while (i < configNumRows) {
+    if (categoria == config_rangeCategoria[0,i]) {
+      return config_rangeCAT1[0,i];
+    }
+    i++;
+  }
+  
   switch (categoria) {
     case "Navidad":
       return "Vacaciones";
@@ -115,6 +133,7 @@ function SET_CAT_1(categoria, desc) {
     case "Halloween":
       return "Pau";
     case "Cuidado":
+    case "Cuidado facial":
     case "Limpieza facial":
       return "Belleza";
     case "Farmacia":
