@@ -26,7 +26,6 @@ function SET_CATEGORIES() {
   var rangePrecio = ss.getRange(precioColumn).getValues();
   var rangeIftttData = ss.getRange(iftttDataColumn).getValues();
   
-  // TODO: Get config!A1 cell value, we should get "config" sheet/tab
   ss.setActiveSheet(ss.getSheetByName("config"));
 
   var configNumRows = ss.getLastRow();
@@ -37,7 +36,6 @@ function SET_CATEGORIES() {
 
   ss.setActiveSheet(ss.getSheetByName(tabName));
 
-  
   var segments, categoriaCell, descripcionCell, iftttDataCell;
 
   var i = 0;
@@ -69,22 +67,13 @@ function SET_CATEGORIES() {
         
         var cat1 = rangeCat1[0,i].join();
         // Cálculo CAT2
-        rangeCat2[0,i] = [SET_CAT_2(
-          categoriaCell,
-          cat1,
-          descripcionCell
-        )];
+        rangeCat2[0,i] = [SET_CAT_2(categoriaCell, cat1, descripcionCell)];
         
         if ((rangeCat1[0,i] != "Desconocido") && (rangeCat2[0,i] != "Desconocido")) {
           // Cálculo esCategorizada
           rangeCategorizada[0,i] = ["true"];
-          
           // Cálculo esHucha
-          rangeEsHucha[0,i] = [ES_HUCHA(
-            cat1,
-            rangeCat2[0,i].join(),
-            descripcionCell
-          )];
+          rangeEsHucha[0,i] = [ES_HUCHA(cat1, rangeCat2[0,i].join(), descripcionCell)];
         }
       }
     }
@@ -103,12 +92,6 @@ function SET_CATEGORIES() {
 
 
 function SET_CAT_1(categoria, desc, config_rangeCategoria, config_rangeCAT1, configNumRows) {
-  //if (IS_SUPERMERCADO(categoria)) return "Supermercado";
-  if (IS_COMER_FUERA(categoria)) return "Comer fuera";
-  if (IS_FACTURAS_MENSUALES(categoria)) return "Facturas mensuales";
-  if (IS_TRANSPORTE(categoria)) return "Transporte";
-  if (IS_RETURN_CATEGORIA_AS_CAT_1(categoria)) return categoria;
-
   var i = 0;
   while (i < configNumRows) {
     if (categoria == config_rangeCategoria[0,i]) {
@@ -117,73 +100,17 @@ function SET_CAT_1(categoria, desc, config_rangeCategoria, config_rangeCAT1, con
     i++;
   }
   
-  switch (categoria) {
-    case "Navidad":
-      return "Vacaciones";
-    case "Comer ocio":
-    case "Comer fuera ocio":
-      return "Comer fuera";
-    case "Capricho":
-    case "Caprichos":
-      return "Paga la casa";
-    case "Podólogo":
-      return "Médico";
-    case "Bautizo":
-      return "Pau";
-    case "Halloween":
-      return "Pau";
-    case "Cuidado":
-    case "Cuidado facial":
-    case "Limpieza facial":
-      return "Belleza";
-    case "Farmacia":
-    case "Dentista":
-      return "Salud";
-    case "Gasto mensual Thais":
-    case "Gasto mensual T":
-      return "Gasto mensual T";
-    case "Gasto mensual Ruben":
-    case "Gasto mensual Rub":
-    case "Gasto mensual R":
-      return "Gasto mensual R";  
-    case "Videojuego":
-    case "Videojuegos":
-      return "Gasto mensual R";
-    case "Alejandra":
-      return "Limpieza";
-    case "Libro":
-      return "Cultura";
-    case "Vacaciones - Hotel":
-    case "Vacaciones - Comida":
-    case "Vacaciones - Transporte":
-    case "Vacaciones - Ocio":
-    case "Vacaciones":
-      return "Vacaciones";
-    case "Regalo":
-    case "Regalos":
-      return "Regalos";
-    case "Tomar algo":
-      return "Ocio";
-    case "Papelería":
-      return "Gasto fortuito";
-    case "Niñera":
-    case "Canguro":
-      return "Pau";
-    case "Suscripción anual":
-    case "Seguro":
-      return "Suscripción anual";
-    default:
-      if (categoria.indexOf("Pau") > -1) {
-        return "Pau";
-      } else if (categoria.indexOf("kindle") > -1) {
-        return "Cultura";
-      }
-      return "Desconocido";
+  if (categoria.indexOf("Pau") > -1) {
+    return "Pau";
+  } else if (categoria.indexOf("kindle") > -1) {
+    return "Cultura";
+  } else {
+    return "Desconocido";
   }
+  
 }
 
 function SET_CAT_2(categoria, cat1, desc) {
-  //if (descIsHucha(desc)) return "Hucha";
   switch (categoria) {
     case "Donaciones":
       return "Donaciones";
@@ -340,104 +267,6 @@ function SET_CAT_2(categoria, cat1, desc) {
   }
 }
 
-
-function IS_RETURN_CATEGORIA_AS_CAT_1(v) {
-  switch (v) {
-    case "Hogar":
-    case "Limpieza":
-    case "Pau":
-    case "Salud":
-    case "Cultura":
-    case "Ocio":
-    case "Hucha":
-    case "Ropa":
-    case "Renta":
-    case "Higiene":
-    case "Donaciones":
-    case "Lotería":
-    case "Formación":
-      return true;
-  }
-  return false;
-}
-
-function IS_FACTURAS_MENSUALES(v) {
-  switch (v) {
-    case "Alquiler":
-    case "Spotify":
-    case "Apple Music":
-    case "iCloud":
-    case "Movil Thais":
-    case "Movil Rub":
-    case "Agua":
-    case "Agua BCN":
-    case "Gas":
-    case "Telefónica":
-    case "O2":
-    case "Endesa":
-      return true;
-  }
-  return false;
-}
-
-function IS_TRANSPORTE(v) {
-  switch (v) {
-    case "Taxi":
-    case "Bus":
-    case "Metro":
-    case "T10":
-    case "T-10":
-    case "T-10 metro":
-    case "T50":
-    case "T-50":
-    case "T-50 metro":
-    case "Transporte":
-    case "Patinete":
-      return true;
-  }
-  return false;
-}
-
-function IS_COMER_FUERA(v) {
-  switch (v) {
-    case "Almuerzo":
-    case "Comer fuera":
-    case "Comida":
-    case "Desayuno":
-    case "Merienda":
-    case "Restaurante":
-    case "Tento":
-      return true;
-  }
-  return false;
-}
-
-function IS_SUPERMERCADO(v) {
-  switch (v) {
-    case "Bon area":
-    case "Bon Area":
-    case "Carrefour":
-    case "Caprabo":
-    case "Carne":
-    case "Fruta y verdura":
-    case "Fruta y Verdura":
-    case "Mercadona":
-    case "Supermercado":
-    case "Alimentación":
-    case "La Sirena":
-    case "Ulabox":
-    case "Veritas":
-    case "Frutos secos":
-    case "Fruteria":
-    case "Fruta":
-    case "Frutas":
-    case "Verdura":
-    case "Verduras":
-    case "Makro":
-      return true;
-  }
-  return false;
-}
 
 function ES_HUCHA(cat1, cat2, desc) {
   if (descIsHucha(desc)) return "true";
