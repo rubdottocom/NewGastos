@@ -35,7 +35,7 @@ function runDaily() {
   var date = new Date();
   var mt = date.getMonth();
   var months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-  var year = " 2018";
+  var year = " 2019";
   var monthFriendly = months[mt] + year;
   var idxStartHour;
   var timestampDate;

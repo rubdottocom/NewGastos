@@ -1,6 +1,12 @@
 function getTabToCategorize() {
   return "Gastos 2019";
 }
+function getCAT1ContainsCategoriaConfigColumn(tabName, numRowsA1) {
+  return tabName+'!F2:F'+numRowsA1;
+}
+function getCAT1ContainsCAT1ConfigColumn(tabName, numRowsA1) {
+  return tabName+'!G2:G'+numRowsA1;
+}
 function getCat1Column(tabName, numRowsA1) {
   return tabName+'!H3:H'+numRowsA1;
 }

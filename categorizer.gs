@@ -28,11 +28,17 @@ function SET_CATEGORIES() {
   
   ss.setActiveSheet(ss.getSheetByName("config"));
 
+  var config_CAT1ContainsNumRows = 1 + ss.getRange("config!E1").getValue();
+  
   var configNumRows = ss.getLastRow();
   var config_categoriaColumn = getCategoriaConfigColumn("config", configNumRows);
   var config_CAT1Column = getCAT1ConfigColumn("config", configNumRows);
+  var config_CAT1ContainsCategoriaColumn = getCAT1ContainsCategoriaConfigColumn("config", config_CAT1ContainsNumRows);
+  var config_CAT1ContainsCAT1Column = getCAT1ContainsCAT1ConfigColumn("config", config_CAT1ContainsNumRows);  
   var config_rangeCategoria = ss.getRange(config_categoriaColumn).getValues();
   var config_rangeCAT1 = ss.getRange(config_CAT1Column).getValues();
+  var config_CAT1ContainsRangeCategoria = ss.getRange(config_CAT1ContainsCategoriaColumn).getValues();
+  var config_CAT1ContainsRangeCAT1 = ss.getRange(config_CAT1ContainsCAT1Column).getValues();
 
   ss.setActiveSheet(ss.getSheetByName(tabName));
 
@@ -63,7 +69,10 @@ function SET_CATEGORIES() {
       if (categoriaCell != "") {
         // Cálculo CAT1
         rangeCat1[0,i] = 
-          [SET_CAT_1(categoriaCell, descripcionCell, config_rangeCategoria, config_rangeCAT1, configNumRows)];
+          [SET_CAT_1(categoriaCell, descripcionCell,
+                     config_rangeCategoria, config_rangeCAT1, configNumRows,
+                     config_CAT1ContainsRangeCategoria, config_CAT1ContainsRangeCAT1, config_CAT1ContainsNumRows
+                    )];
         
         var cat1 = rangeCat1[0,i].join();
         // Cálculo CAT2
@@ -91,7 +100,9 @@ function SET_CATEGORIES() {
 }
 
 
-function SET_CAT_1(categoria, desc, config_rangeCategoria, config_rangeCAT1, configNumRows) {
+function SET_CAT_1(categoria, desc, 
+                   config_rangeCategoria, config_rangeCAT1, configNumRows, 
+                   config_CAT1ContainsRangeCategoria, config_CAT1ContainsRangeCAT1, config_CAT1ContainsNumRows) {
   var i = 0;
   while (i < configNumRows) {
     if (categoria == config_rangeCategoria[0,i]) {
@@ -99,15 +110,14 @@ function SET_CAT_1(categoria, desc, config_rangeCategoria, config_rangeCAT1, con
     }
     i++;
   }
-  
-  if (categoria.indexOf("Pau") > -1) {
-    return "Pau";
-  } else if (categoria.indexOf("kindle") > -1) {
-    return "Cultura";
-  } else {
-    return "Desconocido";
+  i = 0;
+  while (i < config_CAT1ContainsNumRows) {
+    if (categoria.indexOf(config_CAT1ContainsRangeCategoria[0,i]) > -1) {
+      return config_CAT1ContainsRangeCAT1[0,i];
+    }
+    i++;
   }
-  
+  return "Desconocido";
 }
 
 function SET_CAT_2(categoria, cat1, desc) {
