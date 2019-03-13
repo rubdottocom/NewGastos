@@ -42,8 +42,10 @@ function runDaily() {
   var timestamp;
   
   while (i < numRows) {    
+    precio = rangePrice[0,i][0];
+    fecha = rangeDate[0,i][0];
     // Si tenemos precio pero no tenemos fecha 
-    if ((rangePrice[0,i] != "") && (rangeDate[0,i] == "")) {
+    if ((precio != "") && (fecha == "")) {
       idxStartHour = rangeTimestamp[0,i][0].indexOf(" at ");
       // Si tenemos timestamp de IFTTT lo ponemos
       if (idxStartHour > -1) {
@@ -58,7 +60,7 @@ function runDaily() {
     }
     
     // Si no tenemos precio
-    if (rangePrice[0,i] == "") {
+    if (precio == "") {
       rangeDate[0,i] = [""]; // borramos la fecha
       //rangeDate2[0,i] = [""]; // borramos la fecha
     }
